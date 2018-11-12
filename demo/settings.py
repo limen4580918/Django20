@@ -10,26 +10,32 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
+# 导入操作系统模块
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# os.path.abspath:表示绝对路径; abspath()函数可以获取到当前文件的绝对路径
+# __file__:表示当前文件  ;  dirname()函数可以获取到上一级的路径
+# 项目根目录<根路径>
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 所以这里取到当前文件的上一层的上一层文件路径
+# print(BASE_DIR) # 这里可以看出BASE_DIR取到的是项目的根目录
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# django默认给我们准备好的密钥,将来作某些功能需要用来签名计算
 SECRET_KEY = 'o513t3kokt%tjh&nz1utx4h1j_*kr*inkq_5s887#y9t35&=#o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# 表示允许哪些host<主机>访问此程序; allowed允许的意思
 ALLOWED_HOSTS = []
 
 
 # Application definition
-
+#  将自己创建的子应用的配置信息文件apps.py中的Config类 添加到INSTALLED_APPS列表中,表示注册安装子应用
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,8 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 将子应用的配置信息文件apps.py中的Config类添加到INSTALLED_APPS列表中
+    # 注册安装子应用;
+    'user.apps.UserConfig',  # 注意后面的逗号别落下
+
+    'request_response.apps.RequestResponseConfig'  # 这是在安装第二个子应用
 ]
 
+# 中间件<类似Flask的请求勾子>
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -49,6 +61,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#  指定项目总路由(根路由)的地址为 demo.urls
 ROOT_URLCONF = 'demo.urls'
 
 TEMPLATES = [
@@ -67,12 +80,14 @@ TEMPLATES = [
     },
 ]
 
+# 部署上线后程序启动的入口
 WSGI_APPLICATION = 'demo.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# 数据库配置项:默认是sqlite3 将来上线后换成MySQL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,6 +99,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
+# 验证密码规则
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -103,10 +119,17 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# 默认初始化的工程默认语言是英语
+# LANGUAGE_CODE = 'en-us'
+# 设置工程默认语言中文
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+# 默认初始化的工程默认时区是格林威治时间
+# TIME_ZONE = 'UTC'
+# 设置工程默认时区为中国上海
+TIME_ZONE = 'Asia/Shanghai'
 
+# 18表示中间省略了18个字母
 USE_I18N = True
 
 USE_L10N = True
@@ -117,4 +140,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+# 默认设置的访问静态文件的路由前缀
 STATIC_URL = '/static/'
