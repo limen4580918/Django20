@@ -140,5 +140,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-# 默认设置的访问静态文件的路由前缀
+
+# 下面这两行代码用来配置 存放静态文件的 文件夹路径;
+# 默认设置的访问静态文件的路由前缀;
 STATIC_URL = '/static/'
+# 参数BASE_DIR表示根路径<见第20行>; 参数static_files表示项目根路径下的static_files文件夹
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static_files')
+]

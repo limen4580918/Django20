@@ -12,4 +12,7 @@ urlpatterns = [
     url(r'^([a-z]+)/(\d{4})/$', views.weather),
     url(r'^(?P<city>[a-z]+)/(?P<year>\d{4})/$', views.weather1),
     url(r'^query_str/$', views.query_str),
+    # 演示命名空间和反向解析  name一般取与子应用相同的名字,这里为了便于理解
+    # name参数表示 在子路由中给路由起一个别名<以便于反向解析找到这个路由别名>
+    url(r'^reverse_demo/$', views.reverse_demo, name='这是在子应用中给路由起的别名')
 ]

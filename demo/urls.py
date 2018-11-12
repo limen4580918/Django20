@@ -15,13 +15,21 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+import user.views
 
 # 在总路由中,把所有的子路由都包含进来
-urlpatterns = [
-    url(r'^admin/', admin.site.urls), # 默认包含一个和站点管理相关的路由
 
-    # 使用include函数把user子应用的路由,添加到总路由列表中; 还可以设置子应用user的前缀
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),  # 默认包含一个和站点管理相关的路由
+
+    # 使用include函数把user子应用的路由,添加包含到总路由列表中; 还可以设置子应用user的前缀
     # 因为是前缀<后面还要跟地址>,所以一般在主路由中,正则后面不能加$终止匹配符
     url(r'^user/', include('user.urls')),  # 同样后面的逗号别落下
-    url(r'^', include('request_response.urls'))  # 这是在添加第二个子应用的路由
+
+    # 也可以把路径全部包含在主路由中,而子路由不设置;
+    # 如果一个子应用的子路由在总路由中多次注册,则后面注册的会覆盖前面的
+    # url(r'^users/index_info/', user.views.index_info),
+
+    # 在主路由中也可以只设置包含, 具体的路径全部放在子应用的子路由urls.py中;
+    url(r'^', include('request_response.urls')), # 这是在添加第二个子应用的路由
 ]
