@@ -10,7 +10,9 @@ def reverse_demo(request):
     # 反向解析:通过视图找路由
     # 路由<域名后面,?前面的那段字符串:比如23行的'/query_str/'>
     # reverse方法返回一个路由, 参数是子应用的urls.py中给这个路由起的别名
-    url_reverse = reverse('这是在子应用中给路由起的别名')
+    # url_reverse = reverse('这是在子应用中给路由起的别名')
+    # 这是在总路由中定义了子路由的命名空间 后的写法
+    url_reverse = reverse('request_response:这是在子应用中给路由起的别名')
     print(url_reverse)
     return HttpResponse(url_reverse)
 

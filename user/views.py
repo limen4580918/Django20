@@ -19,6 +19,8 @@ def index_info(request):
 def say(request):
     """演示在不同子应用中取相同路由别名"""
     # reverse方法返回一个路由, 参数是子应用的urls.py中给这个路由起的别名
-    url_say = reverse('这是在子应用中给路由起的别名')
+    # url_say = reverse('这是在子应用中给路由起的别名')
+    # 这是在总路由中定义了子路由的命名空间 后的写法
+    url_say = reverse('user:这是在子应用中给路由起的别名')
     print(url_say)
     return HttpResponse(url_say)
