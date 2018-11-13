@@ -1,13 +1,26 @@
-from django.http import HttpResponse
-from django.shortcuts import render, reverse
+from django.http import HttpResponse, request
+from django.shortcuts import render, reverse, redirect
+
 
 # Create your views here.
+
+def redirect_demo(request):
+    """演示重定向"""
+    # redirect方法可以重定向到另外一个路由,接受一个参数to表示路由地址,
+    # 如果参数不是以斜杠开头,则会在此视图对应的路由后面直接拼接路由地址 http://127.0.0.1:8000/redirect_demo/user/index
+    # 如果是以斜杠开头则会重定向到子应用user下的index视图
+    return redirect('/user/index')
+
+
+
+
+
 
 def reverse_demo(request):
     """演示路由的命名空间和反响解析"""
 
     # 正像解析:通过路由找视图
-    # 反向解析:通过视图找路由
+    # 反向解析:通过视图找路由 ---> reverse()
     # 路由<域名后面,?前面的那段字符串:比如23行的'/query_str/'>
     # reverse方法返回一个路由, 参数是子应用的urls.py中给这个路由起的别名
     # url_reverse = reverse('这是在子应用中给路由起的别名')
@@ -15,11 +28,6 @@ def reverse_demo(request):
     url_reverse = reverse('request_response:这是在子应用中给路由起的别名')
     print(url_reverse)
     return HttpResponse(url_reverse)
-
-
-
-
-
 
 
 
