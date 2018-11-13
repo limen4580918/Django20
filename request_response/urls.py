@@ -16,4 +16,5 @@ urlpatterns = [
     # name参数表示 在子路由中给路由起一个别名<以便于反向解析找到这个路由别名>
     url(r'^reverse_demo/$', views.reverse_demo, name='这是在子应用中给路由起的别名'),
     url(r'^redirect_demo/$', views.redirect_demo),
+    url(r'^cookie_demo/$', views.cookie_demo)
 ]

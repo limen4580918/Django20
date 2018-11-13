@@ -4,16 +4,32 @@ from django.shortcuts import render, reverse, redirect
 
 # Create your views here.
 
+def cookie_demo(request):
+    response = HttpResponse('cookie_demo')
+    # set_cookie方法的三个参数分别是是:键, 值, 过期时间
+    response.set_cookie('name', 'laowang', 3600)
+
+    # 浏览器第一次发起请求时request对象是没有包含cookie的
+    # 需要通过response对象设置才能在下次请求时取到cookie
+    name = request.COOKIES.get('name')
+    print(name)
+
+
+    return response
+
+
+
+
+
 def redirect_demo(request):
     """演示重定向"""
-    # redirect方法可以重定向到另外一个路由,接受一个参数to表示路由地址,
+    # redirect()接受一个参数to表示路由地址,可以重定向到另外一个路由
     # 如果参数不是以斜杠开头,则会在此视图对应的路由后面直接拼接路由地址 http://127.0.0.1:8000/redirect_demo/user/index
-    # 如果是以斜杠开头则会重定向到子应用user下的index视图
-    return redirect('/user/index')
+    # 如果是以斜杠开头则会重定向到子应用user下的index视图 http://127.0.0.1:8000/user/index
+    # return redirect('/user/index')
 
-
-
-
+    # 使用反向解析 动态重定向到某个视图,避免路由修改<别名没改>引起的路径错误
+    return redirect(reverse('user:这是在子应用中给路由起的别名'))
 
 
 def reverse_demo(request):
@@ -35,9 +51,9 @@ def reverse_demo(request):
 def query_str(request):
     """演示提取字符串数据"""
     # request.GET 返回一个QueryDict 类型的对象,类似字典 但是里面可以定义同名的键
-    # a = request.GET['key']  # 类字典对象也可以通过key取到value <注意这里是方括号!>
     a = request.GET.get('a')  # 一键一值 如果有同名的键,则会取到最后定义的<覆盖?>
-    b = request.GET['b']
+    # 类字典对象也可以通过key取到value <注意这里是方括号!>  但是取不到会报错导致服务器错误505
+    b = request.GET['b']  # 最好是用get()方法取值 取不到则返回None,不会报错;
     c = request.GET.getlist('a')  # 一键多值,返回一个列表
     print(a, b, c)
     return HttpResponse('query_str')
