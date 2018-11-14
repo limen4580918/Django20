@@ -4,6 +4,24 @@ from django.shortcuts import render, reverse, redirect
 
 # Create your views here.
 
+def session_demo(request):
+    """演示session的缓存读写"""
+    # 设置session  session依赖于cookie
+    request.session['name'] = 'laowang'
+    # 存储session时,会自动生成一个session_id
+    # 后面会把这个session_id通过响应对象写入到浏览器的cookie中
+
+    # 读取session
+    name = request.session.get('name')
+    # 通过request对象带过来的cookie取到它里面的session_id
+    # 通过session_id 到redis服务器中取到那条session记录
+    # 再通过name这个键取到laowang
+    print(name)
+    return HttpResponse('session_demo')
+
+
+
+
 def cookie_demo(request):
     response = HttpResponse('cookie_demo')
     # set_cookie方法的三个参数分别是是:键, 值, 过期时间
@@ -16,9 +34,6 @@ def cookie_demo(request):
 
 
     return response
-
-
-
 
 
 def redirect_demo(request):

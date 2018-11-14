@@ -33,7 +33,6 @@ DEBUG = True
 # 表示允许哪些host<主机>访问此程序; allowed允许的意思
 ALLOWED_HOSTS = []
 
-
 # Application definition
 #  将自己创建的子应用的配置信息文件apps.py中的Config类 添加到INSTALLED_APPS列表中,表示注册安装子应用
 INSTALLED_APPS = [
@@ -44,10 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 将子应用的配置信息文件apps.py中的Config类添加到INSTALLED_APPS列表中
+    # '子应用名.apps.子应用名Config'
     # 注册安装子应用;
     'user.apps.UserConfig',  # 注意后面的逗号别落下
 
-    'request_response.apps.RequestResponseConfig'  # 这是在安装第二个子应用
+    'request_response.apps.RequestResponseConfig',  # 这是在安装第二个子应用
+    'classview.apps.ClassviewConfig',  # 注册classview这个子应用
 ]
 
 # 中间件<类似Flask的请求勾子>
@@ -57,11 +58,14 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 
     # Django默认开启了CSRF防护,会对POST、PUT、PATCH、DELETE请求方式进行CSRF防护验证,测试时可以手动注释掉下面这行代码
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 添加到列表后,这个自定义中间件就可以监听到工程中任何请求和响应
+    'middleware.my_middleware1',  # 自定义中间件
 ]
 
 #  指定项目总路由(根路由)的地址为 demo.urls
@@ -86,18 +90,23 @@ TEMPLATES = [
 # 部署上线后程序启动的入口
 WSGI_APPLICATION = 'demo.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 # 数据库配置项:默认是sqlite3 将来上线后换成MySQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # django默认使用的数据库是sqlite3,现在我们需要用到mysql
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '127.0.0.1',  # 数据库主机
+        'PORT': 3306,  # 数据库端口
+        'USER': 'root',  # 数据库用户名
+        'PASSWORD': 'mysql',  # 数据库用户密码
+        'NAME': 'django_demo' # 使用的数据库的名字
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -117,7 +126,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -139,7 +147,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
@@ -151,3 +158,24 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_files')
 ]
+
+# 配置redis数据库<自己加的>  CACHES缓存的意思
+CACHES = {
+    "default": {
+        # 后端 :     django_redis 的缓存 用redis来缓存
+        "BACKEND": "django_redis.cache.RedisCache",
+        # 缓存的地址   最后的数字表示启用哪个redis数据库<这里是用1号数据库>
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        # 选项
+        "OPTIONS": {
+            # 客户端类,表示你要用哪个客户端<这里指定的django_redis>来操作redis来存
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# session的引擎    用django下的contrib下的sessions下的后端缓存
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+# 设置缓存的别名  也就是上面的default
+SESSION_CACHE_ALIAS = "default"
