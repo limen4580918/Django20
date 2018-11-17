@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -9,7 +10,12 @@ class BooksAPIView(View):
 
     def get(self):
         """GET  /books/   提供所有记录"""
-        pass
+
+
+
+
+
+        return JsonResponse()
 
     def post(self):
         """POST /books/   新增一条记录"""

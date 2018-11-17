@@ -49,6 +49,11 @@ INSTALLED_APPS = [
 
     'request_response.apps.RequestResponseConfig',  # 这是在安装第二个子应用
     'classview.apps.ClassviewConfig',  # 注册classview这个子应用
+
+    'booktest.apps.BooktestConfig',  # 注册booktest子应用 这个需要迁移建表,所以就必须注册
+
+    # 注册应用的目的: 如果你的应用需要使用模型迁移建表的操作,则必须要在此注册应用,不然就无法迁移建表
+    # 如果你的应用只有视图的业务逻辑,应用可以不注册,因为视图只和路由相关
 ]
 
 # 中间件<类似Flask的请求勾子>
