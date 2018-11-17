@@ -14,3 +14,18 @@ def my_middleware1(get_response):
         return response
 
     return middleware
+
+def my_middleware2(get_response):
+    print("初始化中间件2")
+
+    def middleware(request):
+
+        print("before request 2被调用")
+
+        response = get_response(request)
+
+        print('after response 2被调用')
+
+        return response
+
+    return middleware

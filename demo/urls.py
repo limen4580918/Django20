@@ -35,4 +35,6 @@ urlpatterns = [
     url(r'^', include('request_response.urls', namespace='request_response')), # 这是在添加第二个子应用的路由
 
     url(r'^', include('classview.urls')),
+
+    url(r'^', include('booktest.urls')),  # 书籍路由
 ]

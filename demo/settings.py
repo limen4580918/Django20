@@ -66,6 +66,7 @@ MIDDLEWARE = [
 
     # 添加到列表后,这个自定义中间件就可以监听到工程中任何请求和响应
     'middleware.my_middleware1',  # 自定义中间件
+    'middleware.my_middleware2',
 ]
 
 #  指定项目总路由(根路由)的地址为 demo.urls
